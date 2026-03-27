@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7b64530d47c61e343a21d594f32ba24e
+timeCreated: 1515255594
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Meshes/Dinos/TRex/TRex_Idle.anim
+  uploadId: 763244

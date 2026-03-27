@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: fff67418a15dc1b4cb79a5ba25b4902a
+timeCreated: 1528558820
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Prefabs/Dinosaurs/Dinosaurs
+    Wander Script/Stegosaurus_Green_WS.prefab
+  uploadId: 763244

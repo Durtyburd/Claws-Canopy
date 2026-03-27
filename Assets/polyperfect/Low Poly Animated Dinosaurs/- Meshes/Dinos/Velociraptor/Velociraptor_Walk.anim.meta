@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 40b48dbcb0def8345805da90fb96a8ef
+timeCreated: 1529076888
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Meshes/Dinos/Velociraptor/Velociraptor_Walk.anim
+  uploadId: 763244

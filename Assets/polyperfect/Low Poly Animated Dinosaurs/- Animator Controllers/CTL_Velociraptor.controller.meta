@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6dab0ceb54f73d047be084551954591b
+timeCreated: 1529067741
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Animator Controllers/CTL_Velociraptor.controller
+  uploadId: 763244

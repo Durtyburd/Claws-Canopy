@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dbfe80ef9197c214aa628be9908c0547
+timeCreated: 1510073031
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Animator Controllers/CTL_Pterodactyl.controller
+  uploadId: 763244

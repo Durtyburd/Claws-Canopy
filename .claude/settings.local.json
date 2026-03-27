@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"/c/Users/sethp/OneDrive/Documents/UndisclosedGame/Claw & Canopy/Claws-Canopy/Assets/Scripts\")",
+      "Bash(find \"/c/Users/sethp/OneDrive/Documents/UndisclosedGame/Claw & Canopy/Claws-Canopy/Assets/Scripts\" -type f -name \"*.cs\")",
+      "Bash(find:*)",
+      "Bash(ls -la \"/c/Users/sethp/OneDrive/Documents/UndisclosedGame/Claw & Canopy/Claws-Canopy/Assets/\")",
+      "Bash(grep -r \"Transport\\\\|FizzySteamworks\\\\|kcp2k\" Assets/Scenes/*.unity)",
+      "Bash(ls:*)",
+      "Bash(grep -r DecalProjector \"/c/Users/sethp/OneDrive/Documents/UndisclosedGame/Claw & Canopy/Claws-Canopy/Assets\" --include=*.unity --include=*.cs)"
+    ]
+  }
+}

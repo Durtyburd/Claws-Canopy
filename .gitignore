@@ -97,3 +97,33 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# IDE
+.idea/
+.vscode/
+*.slnx
+
+# OS files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ParrelSync clones
+/[Aa]ssets/ParrelSync/ProjectCloner/
+
+# Plastic SCM
+.plastic/
+.plastic
+
+# Code coverage
+/[Cc]ode[Cc]overage/
+
+# Baked lighting (large, regenerable)
+/[Aa]ssets/**/LightingData.asset
+/[Aa]ssets/**/ReflectionProbe-*
+
+# NavMesh bake data (regenerable)
+/[Aa]ssets/**/NavMesh*.asset
+
+# Rider
+.idea.meta

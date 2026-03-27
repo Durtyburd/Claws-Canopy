@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2a41492c6e80d074b8aa1230c38e9622
+timeCreated: 1528720851
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Animator Controllers/CTL_Brachiosaurus.controller
+  uploadId: 763244

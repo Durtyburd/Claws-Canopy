@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1fb18b1caf2e1124795c45a095e3577f
+timeCreated: 1529076877
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Meshes/Dinos/Velociraptor/Velociraptor_Idle.anim
+  uploadId: 763244

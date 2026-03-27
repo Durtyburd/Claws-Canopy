@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f4046d5f9a6eb46869749e129e8b6273
+timeCreated: 1510073031
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Animator Controllers/DEMO
+    Scene/CTL_DEMO_Pterodactyl2.controller
+  uploadId: 763244

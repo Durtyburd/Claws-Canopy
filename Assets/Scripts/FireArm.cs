@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using System.Collections;
 
 public class FireArm : MonoBehaviour
@@ -18,7 +19,14 @@ public class FireArm : MonoBehaviour
     [Header("References")]
     [SerializeField] private Animator anim;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] private GameObject bulletHolePrefab;
+
+    [Header("Damage")]
+    [SerializeField] private float damage = 10f;
+
+    [Header("Decal")]
+    [SerializeField] private Material bulletHoleMaterial;
+    [SerializeField] private float decalSize = 0.15f;
+    [SerializeField] private float decalLifetime = 30f;
 
     private void Update()
     {
@@ -34,41 +42,56 @@ public class FireArm : MonoBehaviour
         }
     }
 
-   private void Shoot()
-{
-    if (!canShoot) return;
-    if (shootPoint == null) return;
-
-    if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, range, shootableLayers, QueryTriggerInteraction.Ignore))
+    private void Shoot()
     {
-        if (bulletHolePrefab != null)
+        if (!canShoot) return;
+        if (shootPoint == null) return;
+
+        Debug.DrawRay(shootPoint.position, shootPoint.forward * range, Color.red, 1f);
+
+        if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, range, shootableLayers, QueryTriggerInteraction.Ignore))
         {
-            Quaternion rotation = Quaternion.LookRotation(-hit.normal) * Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+            Debug.Log($"Hit: {hit.collider.gameObject.name} on layer {hit.collider.gameObject.layer}");
+            var enemyAI = hit.collider.GetComponentInParent<EnemyAI>();
+            if (enemyAI != null)
+                enemyAI.TakeDamage(damage);
+            else
+                SpawnDecal(hit);
+        }
+        else
+        {
+            Debug.Log("Raycast hit nothing");
+        }
 
-            GameObject impact = Instantiate(
-                bulletHolePrefab,
-                hit.point + hit.normal * 0.001f,
-                rotation
-            );
+        StartCoroutine(ResetFireRate());
 
-            impact.transform.localScale = Vector3.one * 0.05f;
+        if (anim != null)
+        {
+            anim.CrossFadeInFixedTime("Shoot", 0.1f);
+        }
 
-            Destroy(impact, 10f);
+        if (shootSound != null)
+        {
+            AudioSource.PlayClipAtPoint(shootSound, shootPoint.position);
         }
     }
 
-    StartCoroutine(ResetFireRate());
-
-    if (anim != null)
+    private void SpawnDecal(RaycastHit hit)
     {
-        anim.CrossFadeInFixedTime("Shoot", 0.1f);
-    }
+        if (bulletHoleMaterial == null) return;
 
-    if (shootSound != null)
-    {
-        AudioSource.PlayClipAtPoint(shootSound, shootPoint.position);
+        var decalObj = new GameObject("BulletHole");
+        decalObj.transform.position = hit.point + hit.normal * 0.025f;
+        decalObj.transform.rotation = Quaternion.LookRotation(-hit.normal)
+            * Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+
+        var projector = decalObj.AddComponent<DecalProjector>();
+        projector.material = bulletHoleMaterial;
+        projector.size = new Vector3(decalSize, decalSize, 0.1f);
+        projector.pivot = new Vector3(0f, 0f, 0.05f);
+
+        Destroy(decalObj, decalLifetime);
     }
-}
 
     private IEnumerator ResetFireRate()
     {

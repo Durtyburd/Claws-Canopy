@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7a4c86d95c44e384ca869daa178d8aa8
+timeCreated: 1515252765
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Meshes/Dinos/Stegosaurus/Stegosaurus_Eat_Transition.anim
+  uploadId: 763244

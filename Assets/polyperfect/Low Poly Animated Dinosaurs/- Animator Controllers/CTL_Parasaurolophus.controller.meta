@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 029b36cc9e41cb445a2fee24515d5861
+timeCreated: 1510073031
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Animator Controllers/CTL_Parasaurolophus.controller
+  uploadId: 763244

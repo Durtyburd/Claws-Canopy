@@ -43,6 +43,31 @@ namespace StarterAssets
 		[Tooltip("What layers the character uses as ground")]
 		public LayerMask GroundLayers;
 
+		[Header("Crouch")]
+		[Tooltip("Move speed while crouching in m/s")]
+		public float CrouchSpeed = 2.0f;
+		[Tooltip("CharacterController height while crouching")]
+		public float CrouchHeight = 1.0f;
+		[Tooltip("How fast the crouch transition is")]
+		public float CrouchSmoothing = 10f;
+
+		private float _standingHeight;
+		private Vector3 _standingCenter;
+		private bool _isCrouching;
+
+		[Header("Stamina")]
+		[Tooltip("Maximum stamina")]
+		public float MaxStamina = 100f;
+		[Tooltip("Stamina drain per second while sprinting")]
+		public float StaminaDrainRate = 20f;
+		[Tooltip("Stamina recovery per second while not sprinting")]
+		public float StaminaRegenRate = 10f;
+		[Tooltip("Delay in seconds before stamina starts regenerating")]
+		public float StaminaRegenDelay = 1f;
+
+		[HideInInspector] public float CurrentStamina;
+		private float _staminaRegenTimer;
+
 		[Header("Cinemachine")]
 		[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
 		public GameObject CinemachineCameraTarget;
@@ -108,10 +133,16 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+			CurrentStamina = MaxStamina;
+
+			_standingHeight = _controller.height;
+			_standingCenter = _controller.center;
 		}
 
 		private void Update()
 		{
+			UpdateCrouch();
+			UpdateStamina();
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -154,7 +185,8 @@ namespace StarterAssets
 		private void Move()
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			bool canSprint = _input.sprint && CurrentStamina > 0f && !_isCrouching;
+			float targetSpeed = _isCrouching ? CrouchSpeed : (canSprint ? SprintSpeed : MoveSpeed);
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -196,6 +228,49 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+		}
+
+		private void UpdateCrouch()
+		{
+			_isCrouching = _input.crouch;
+
+			float targetHeight = _isCrouching ? CrouchHeight : _standingHeight;
+			_controller.height = Mathf.Lerp(_controller.height, targetHeight, Time.deltaTime * CrouchSmoothing);
+
+			float heightDiff = _controller.height - _standingHeight;
+			Vector3 targetCenter = _standingCenter + new Vector3(0f, heightDiff / 2f, 0f);
+			_controller.center = Vector3.Lerp(_controller.center, targetCenter, Time.deltaTime * CrouchSmoothing);
+
+			if (CinemachineCameraTarget != null)
+			{
+				float standingCamY = _standingHeight;
+				float crouchCamY = CrouchHeight;
+				float targetCamY = _isCrouching ? crouchCamY : standingCamY;
+				Vector3 camPos = CinemachineCameraTarget.transform.localPosition;
+				camPos.y = Mathf.Lerp(camPos.y, targetCamY, Time.deltaTime * CrouchSmoothing);
+				CinemachineCameraTarget.transform.localPosition = camPos;
+			}
+		}
+
+		private void UpdateStamina()
+		{
+			bool isSprinting = _input.sprint && _input.move != Vector2.zero && CurrentStamina > 0f;
+
+			if (isSprinting)
+			{
+				CurrentStamina -= StaminaDrainRate * Time.deltaTime;
+				CurrentStamina = Mathf.Max(CurrentStamina, 0f);
+				_staminaRegenTimer = StaminaRegenDelay;
+			}
+			else
+			{
+				_staminaRegenTimer -= Time.deltaTime;
+				if (_staminaRegenTimer <= 0f)
+				{
+					CurrentStamina += StaminaRegenRate * Time.deltaTime;
+					CurrentStamina = Mathf.Min(CurrentStamina, MaxStamina);
+				}
+			}
 		}
 
 		private void JumpAndGravity()

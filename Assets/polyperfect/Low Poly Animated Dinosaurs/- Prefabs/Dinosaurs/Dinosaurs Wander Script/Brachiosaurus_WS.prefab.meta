@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 38bc7d0933a2a474fad8461a0fe49f23
+timeCreated: 1529252670
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Prefabs/Dinosaurs/Dinosaurs
+    Wander Script/Brachiosaurus_WS.prefab
+  uploadId: 763244

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 15816fc9bea9e1d429bdab4c645934de
+timeCreated: 1528558824
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Prefabs/Dinosaurs/Dinosaurs
+    Wander Script/Pteranodon_WS.prefab
+  uploadId: 763244

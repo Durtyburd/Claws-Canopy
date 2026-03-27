@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a20c06edf5d95024f95fbdf6601c3c1b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Common/Wander Script/Editor/Common_WanderManagerEditor.cs
+  uploadId: 763244

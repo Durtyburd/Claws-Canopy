@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 66c4d78bbe13d4777bd10575c3a8c680
+timeCreated: 1529252672
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Prefabs/Dinosaurs/Dinosaurs
+    Wander Script/Velociraptor_WS.prefab
+  uploadId: 763244

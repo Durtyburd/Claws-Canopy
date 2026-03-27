@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f472feb3b8f3a034482b9b9d918d4cb3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 110313
+  packageName: Low Poly Animated Dinosaurs
+  packageVersion: 2.05
+  assetPath: Assets/polyperfect/Low Poly Animated Dinosaurs/- Scripts/Wander Script/Editor/Dino_StatsTable.cs
+  uploadId: 763244

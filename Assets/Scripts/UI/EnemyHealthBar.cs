@@ -64,7 +64,7 @@ public class EnemyHealthBar : MonoBehaviour
 
         if (!_canvas.enabled) _canvas.enabled = true;
 
-        transform.position = _enemy.transform.position + new Vector3(0f, _heightOffset, 0f);
+        //transform.position = transform.position + new Vector3(0f, _heightOffset, 0f);
         transform.forward = _cam.transform.forward;
 
         if (fillImage != null)

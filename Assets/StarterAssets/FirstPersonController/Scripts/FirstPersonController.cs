@@ -55,6 +55,10 @@ namespace StarterAssets
 		private Vector3 _standingCenter;
 		private bool _isCrouching;
 
+		public bool IsCrouching => _isCrouching;
+		public bool IsSprinting => _input != null && _input.sprint && _input.move != Vector2.zero && CurrentStamina > 0f && !_isCrouching;
+		public float CurrentSpeed => _speed;
+
 		[Header("Stamina")]
 		[Tooltip("Maximum stamina")]
 		public float MaxStamina = 100f;
@@ -84,6 +88,9 @@ namespace StarterAssets
 		private float _rotationVelocity;
 		private float _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
+
+		// knockback
+		private Vector3 _knockbackVelocity;
 
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
@@ -146,6 +153,7 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+			ApplyKnockbackDecay();
 		}
 
 		private void LateUpdate()
@@ -226,8 +234,8 @@ namespace StarterAssets
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 			}
 
-			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			// move the player (includes knockback)
+			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
 		}
 
 		private void UpdateCrouch()
@@ -319,6 +327,19 @@ namespace StarterAssets
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
+		}
+
+		/// <summary>Apply an instant knockback force to the player.</summary>
+		public void ApplyKnockback(Vector3 force)
+		{
+			_knockbackVelocity += force;
+		}
+
+		private void ApplyKnockbackDecay()
+		{
+			_knockbackVelocity = Vector3.Lerp(_knockbackVelocity, Vector3.zero, Time.deltaTime * 8f);
+			if (_knockbackVelocity.sqrMagnitude < 0.01f)
+				_knockbackVelocity = Vector3.zero;
 		}
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

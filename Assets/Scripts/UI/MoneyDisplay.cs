@@ -12,6 +12,8 @@ public class MoneyDisplay : MonoBehaviour
         var playerObj = FindAnyObjectByType<StarterAssets.FirstPersonController>();
         if (playerObj != null)
             _wallet = playerObj.GetComponent<PlayerWallet>();
+        else
+            Debug.LogWarning("MoneyDisplay: No FirstPersonController found in scene.");
     }
 
     private void Update()

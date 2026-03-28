@@ -6,14 +6,26 @@ public class PlayerHealth : MonoBehaviour
     public float MaxHealth = 100f;
     [HideInInspector] public float CurrentHealth;
 
+    [Header("Respawn")]
+    [SerializeField] private float invulnerabilityDuration = 2f;
+
     private Vector3 _spawnPosition;
     private Quaternion _spawnRotation;
+    private float _invulnerabilityTimer;
+
+    public bool IsInvulnerable => _invulnerabilityTimer > 0f;
 
     private void Start()
     {
         CurrentHealth = MaxHealth;
         _spawnPosition = transform.position;
         _spawnRotation = transform.rotation;
+    }
+
+    private void Update()
+    {
+        if (_invulnerabilityTimer > 0f)
+            _invulnerabilityTimer -= Time.deltaTime;
     }
 
     public void Heal(float amount)
@@ -24,6 +36,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (IsInvulnerable) return;
+
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Max(CurrentHealth, 0f);
 
@@ -46,6 +60,7 @@ public class PlayerHealth : MonoBehaviour
             controller.enabled = true;
 
         CurrentHealth = MaxHealth;
+        _invulnerabilityTimer = invulnerabilityDuration;
 
         var fpc = GetComponent<StarterAssets.FirstPersonController>();
         if (fpc != null)

@@ -15,7 +15,10 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        bool escPressed = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
+        bool startPressed = Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame;
+
+        if (escPressed || startPressed)
         {
             if (_isPaused)
                 Resume();

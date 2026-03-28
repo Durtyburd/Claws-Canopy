@@ -1,14 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private float healAmount = 25f;
+    [SerializeField] private ItemData itemData;
     [SerializeField] private float interactRange = 3f;
 
+    public void SetItemData(ItemData data) => itemData = data;
+    public void SetInteractRange(float range) => interactRange = range;
+
     private Transform _player;
-    private PlayerHealth _playerHealth;
+    private PlayerInventory _inventory;
     private bool _playerInRange;
 
     private void Start()
@@ -17,25 +19,25 @@ public class Collectible : MonoBehaviour
         if (playerObj != null)
         {
             _player = playerObj.transform;
-            _playerHealth = playerObj.GetComponent<PlayerHealth>();
+            _inventory = playerObj.GetComponent<PlayerInventory>();
+        }
+        else
+        {
+            Debug.LogWarning($"Collectible ({name}): No FirstPersonController found in scene.");
         }
 
-        // Make sure collider is a trigger
-        var col = GetComponent<Collider>();
-        col.isTrigger = true;
     }
 
     private void Update()
     {
-        if (_player == null) return;
+        if (_player == null || _inventory == null) return;
 
         float distance = Vector3.Distance(transform.position, _player.position);
-        _playerInRange = distance <= interactRange;
+        bool hasRoom = _inventory.HasRoomFor(itemData);
+        _playerInRange = distance <= interactRange && hasRoom;
 
         if (_playerInRange && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            Consume();
-        }
+            Pickup();
     }
 
     private void OnGUI()
@@ -47,7 +49,7 @@ public class Collectible : MonoBehaviour
         style.alignment = TextAnchor.MiddleCenter;
         style.normal.textColor = Color.white;
 
-        float width = 250f;
+        float width = 300f;
         float height = 40f;
         Rect rect = new Rect(
             (Screen.width - width) / 2f,
@@ -56,16 +58,13 @@ public class Collectible : MonoBehaviour
             height
         );
 
-        GUI.Label(rect, "Press E to Eat", style);
+        string label = itemData != null ? $"Press E to Pick Up {itemData.itemName}" : "Press E to Pick Up";
+        GUI.Label(rect, label, style);
     }
 
-    private void Consume()
+    private void Pickup()
     {
-        if (_playerHealth != null)
-        {
-            _playerHealth.Heal(healAmount);
-        }
-
-        Destroy(gameObject);
+        if (_inventory.TryPickup(itemData))
+            Destroy(gameObject);
     }
 }

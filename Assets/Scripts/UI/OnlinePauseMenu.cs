@@ -1,0 +1,85 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class OnlinePauseMenu : MonoBehaviour
+{
+    [SerializeField] private GameObject menuPanel;
+
+    private bool _isPaused;
+
+    private static OnlinePauseMenu _instance;
+
+    public static OnlinePauseMenu Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<OnlinePauseMenu>();
+            }
+
+            if (_instance == null)
+            {
+                Debug.LogError("There is no instance of OnlinePauseMenu");
+            }
+            return _instance;
+        }
+    }
+    
+    private void Start()
+    {
+        if (menuPanel != null)
+            menuPanel.SetActive(false);
+    }
+
+    // private void Update()
+    // {
+    //     if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+    //     {
+    //         if (_isPaused)
+    //             Resume();
+    //         else
+    //             Pause();
+    //     }
+    // }
+
+    public void TogglePause()
+    {
+        if (_isPaused)
+        {
+            Resume();
+        }
+        else
+        {
+            Pause();
+        }
+    }
+
+    public void Resume()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+        menuPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void Pause()
+    {
+        _isPaused = true;
+        Time.timeScale = 0f;
+        menuPanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void QuitGame()
+    {
+        Time.timeScale = 1f;
+        Application.Quit();
+
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+}

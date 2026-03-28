@@ -49,6 +49,11 @@ namespace StarterAssets
 		{
 			CrouchInput(value.isPressed);
 		}
+
+		public void OnPause(InputValue value)
+		{
+			OnlinePauseMenu.Instance?.TogglePause();
+		}
 #endif
 
 

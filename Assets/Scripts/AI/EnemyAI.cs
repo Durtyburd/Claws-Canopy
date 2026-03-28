@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public enum DinoMode { Aggressive, Passive }
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IDamageable
 {
     [Header("Behavior")]
     [SerializeField] private DinoMode mode = DinoMode.Aggressive;
@@ -21,6 +21,10 @@ public class EnemyAI : MonoBehaviour
     [Header("Health")]
     public float MaxHealth = 100f;
     [HideInInspector] public float CurrentHealth;
+
+    // IDamageable
+    float IDamageable.MaxHealth => MaxHealth;
+    float IDamageable.CurrentHealth => CurrentHealth;
     private bool _isDead;
 
     [Header("Pursuit")]
@@ -38,7 +42,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float despawnTime = 30f;
 
     [Header("Animator Parameters")]
-    [SerializeField] private string idleParam = "isWalking";
+    [SerializeField] private string idleParam = "isEating";
     [SerializeField] private string runParam = "isRunning";
     [SerializeField] private string attackParam = "isAttacking";
     [SerializeField] private string deathParam = "isDead";
@@ -54,6 +58,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent _agent;
     private Transform _player;
     private PlayerHealth _playerHealth;
+    private PlayerVisibility _visibility;
     private AudioSource _audioSource;
 
     private Vector3 _spawnPosition;
@@ -73,6 +78,11 @@ public class EnemyAI : MonoBehaviour
         {
             _player = playerObj.transform;
             _playerHealth = playerObj.GetComponent<PlayerHealth>();
+            _visibility = playerObj.GetComponent<PlayerVisibility>();
+        }
+        else
+        {
+            Debug.LogWarning($"EnemyAI ({name}): No FirstPersonController found in scene. AI will be inactive.");
         }
 
         if (anim == null)
@@ -92,6 +102,23 @@ public class EnemyAI : MonoBehaviour
     {
         if (_player == null || _isDead) return;
 
+        // Frightened behavior overrides normal AI (e.g. from T-Rex roar)
+        if (_frightenTimer > 0f)
+        {
+            _frightenTimer -= Time.deltaTime;
+            _isWandering = false;
+            _agent.isStopped = false;
+            _agent.speed = fleeSpeed;
+
+            Vector3 fleeDir = (transform.position - _frightenSource).normalized;
+            Vector3 fleeTarget = transform.position + fleeDir * fleeDistance;
+            if (NavMesh.SamplePosition(fleeTarget, out NavMeshHit hit, fleeDistance, NavMesh.AllAreas))
+                _agent.SetDestination(hit.position);
+
+            UpdateAnimator();
+            return;
+        }
+
         if (mode == DinoMode.Aggressive)
             AggressiveUpdate();
         else
@@ -104,6 +131,7 @@ public class EnemyAI : MonoBehaviour
     private void AggressiveUpdate()
     {
         float distance = Vector3.Distance(transform.position, _player.position);
+        bool detected = DetectionUtils.CanDetectPlayer(transform.position, detectionRange, _visibility, _player);
 
         if (distance <= attackRange)
         {
@@ -113,7 +141,7 @@ public class EnemyAI : MonoBehaviour
             FaceTarget();
             TryAttack();
         }
-        else if (distance <= detectionRange)
+        else if (detected)
         {
             _isWandering = false;
             _agent.isStopped = false;
@@ -128,9 +156,9 @@ public class EnemyAI : MonoBehaviour
 
     private void PassiveUpdate()
     {
-        float distance = Vector3.Distance(transform.position, _player.position);
+        bool detected = DetectionUtils.CanDetectPlayer(transform.position, detectionRange, _visibility, _player);
 
-        if (distance <= detectionRange)
+        if (detected)
         {
             _isWandering = false;
             _agent.isStopped = false;
@@ -199,6 +227,17 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    /// <summary>Force this dino to flee from a position (used by T-Rex roar).</summary>
+    public void Frighten(Vector3 scareSource, float fleeDuration = 5f)
+    {
+        if (_isDead) return;
+        _frightenTimer = fleeDuration;
+        _frightenSource = scareSource;
+    }
+
+    private float _frightenTimer;
+    private Vector3 _frightenSource;
+
     public void TakeDamage(float damage)
     {
         if (_isDead) return;
@@ -241,6 +280,8 @@ public class EnemyAI : MonoBehaviour
         bool isMoving = _agent.velocity.magnitude > 0.1f;
         bool isAttacking = _attackTimer > attackCooldown - 0.5f;
 
+        bool isIdle = !isMoving && !isAttacking;
+        anim.SetBool(idleParam, isIdle);
         anim.SetBool(walkParam, isMoving && _isWandering && !isAttacking);
         anim.SetBool(runParam, isMoving && !_isWandering && !isAttacking);
         anim.SetBool(attackParam, isAttacking);

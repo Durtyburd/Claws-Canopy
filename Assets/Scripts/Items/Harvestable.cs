@@ -23,6 +23,10 @@ public class Harvestable : MonoBehaviour
             _player = playerObj.transform;
             _wallet = playerObj.GetComponent<PlayerWallet>();
         }
+        else
+        {
+            Debug.LogWarning($"Harvestable ({name}): No FirstPersonController found in scene.");
+        }
     }
 
     private void Update()

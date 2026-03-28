@@ -52,9 +52,9 @@ public class FireArm : MonoBehaviour
         if (Physics.Raycast(shootPoint.position, shootPoint.forward, out RaycastHit hit, range, shootableLayers, QueryTriggerInteraction.Ignore))
         {
             Debug.Log($"Hit: {hit.collider.gameObject.name} on layer {hit.collider.gameObject.layer}");
-            var enemyAI = hit.collider.GetComponentInParent<EnemyAI>();
-            if (enemyAI != null)
-                enemyAI.TakeDamage(damage);
+            var damageable = hit.collider.GetComponentInParent<IDamageable>();
+            if (damageable != null)
+                damageable.TakeDamage(damage);
             else
                 SpawnDecal(hit);
         }

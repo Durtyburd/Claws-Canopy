@@ -20,7 +20,7 @@ public class OnlinePauseMenu : MonoBehaviour
 
             if (_instance == null)
             {
-                Debug.LogError("There is no instance of OnlinePauseMenu");
+                Debug.Log("There is no instance of OnlinePauseMenu");
             }
             return _instance;
         }

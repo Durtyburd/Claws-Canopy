@@ -246,15 +246,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.91
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.59
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6556307555316582679, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1311,6 +1311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   MaxHealth: 100
   CurrentHealth: 0
+  invulnerabilityDuration: 2
 --- !u!114 &1324165417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,7 +1363,9 @@ MonoBehaviour:
   - {fileID: 7031075963905413233, guid: 17846783f35c2f5498be7d9619fcc9db, type: 3}
   spawnCount: 100
   spawnRadius: 500
-  healAmount: 25
+  mushroomItemData: {fileID: 11400000, guid: b9a3c0e8e2dd880408edaeb32a3cdfff, type: 2}
+  interactRange: 3
+  colliderRadius: 0.5
 --- !u!4 &1347129059
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,14 +1831,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f9fef573b56eb42bea6456dad80f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DinoSpawner
-  dinoPrefabs:
-  - {fileID: 8121716470357599844, guid: ced8a278838a5564a85bfbc4a1e44c6b, type: 3}
-  - {fileID: 2685450566566264609, guid: 41cc056679dcf3d429c0ab0fcaedab52, type: 3}
-  - {fileID: 6603967879255027761, guid: 733432fb6a1737f4d90e7e0bec2c57aa, type: 3}
-  - {fileID: 282352084219620514, guid: faf6788894dc2da4bbce9652c0f825a9, type: 3}
-  spawnCount: 30
+  dinoEntries:
+  - prefab: {fileID: 7459080184207954825, guid: f04b2458870820a489ae2d3bc8735290, type: 3}
+    count: 1
+  - prefab: {fileID: 1704046029756010, guid: 81efc3443af94c840a3867cb8db95a5d, type: 3}
+    count: 5
   spawnRadius: 150
   minDistanceFromPlayer: 10
+  packSize: 3
+  minDistanceBetweenPacks: 25
+  nestPrefab: {fileID: 1817562669793772, guid: 9dddd7d49539f4dda8c0e9c965a30f70, type: 3}
+  eggPrefab: {fileID: 1976268113009962, guid: dad5d5ef3798c405d9440c3ce755b08a, type: 3}
+  eggsPerNest: 3
 --- !u!4 &1621598281
 Transform:
   m_ObjectHideFlags: 0
@@ -2597,7 +2604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8038491308224120261, guid: f2357d005e43604468f6ac1606a13f4e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.71
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8038491308224120261, guid: f2357d005e43604468f6ac1606a13f4e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2605,7 +2612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8038491308224120261, guid: f2357d005e43604468f6ac1606a13f4e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.23
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8038491308224120261, guid: f2357d005e43604468f6ac1606a13f4e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2656,3 +2663,4 @@ SceneRoots:
   - {fileID: 693489462}
   - {fileID: 369791559}
   - {fileID: 1580367426}
+  - {fileID: 7490206157201581030}

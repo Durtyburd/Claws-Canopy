@@ -113,5 +113,24 @@ namespace Mirror
                 if (networkIdentity != null && networkIdentity.connectionToClient != null)
                     newObservers.Add(networkIdentity.connectionToClient);
         }
+
+        [ServerCallback]
+        public override void SetHostVisibility(NetworkIdentity identity, bool visible)
+        {
+            base.SetHostVisibility(identity, visible);
+
+            foreach (Transform child in identity.transform)
+            {
+                if (child.CompareTag("InterestParent"))
+                {
+                    child.gameObject.SetActive(visible);
+                }
+            }
+            
+            foreach (MeshRenderer rend in identity.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                rend.enabled = visible;
+            }
+        }
     }
 }

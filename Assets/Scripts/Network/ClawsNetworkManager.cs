@@ -6,7 +6,7 @@ using Steamworks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CustomNetworkManager : NetworkManager
+public class ClawsNetworkManager : NetworkManager
 {
     [SerializeField] private bool isSteam = false;
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -58,10 +58,10 @@ public class CustomNetworkManager : NetworkManager
         fadeInOut.ShowScreenNoDelay();
 
 
-        if (sceneName == onlineScene)
-        {
-            StartCoroutine(ServerLoadSubScenes());
-        }
+        // if (sceneName == onlineScene)
+        // {
+        //     StartCoroutine(ServerLoadSubScenes());
+        // }
     }
 
     public override void OnClientSceneChanged()
@@ -85,7 +85,6 @@ public class CustomNetworkManager : NetworkManager
         }
 
         print(scenesToLoad.Length);
-
         subscenesLoaded = true;
     }
 
@@ -174,8 +173,8 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerReady(conn);
 
-        if (conn.identity == null)
-            StartCoroutine(AddPlayerDelayed(conn));
+        // if (conn.identity == null)
+        //     StartCoroutine(AddPlayerDelayed(conn));
     }
 
     IEnumerator AddPlayerDelayed(NetworkConnectionToClient conn)

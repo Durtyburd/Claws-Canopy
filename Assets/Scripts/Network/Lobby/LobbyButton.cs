@@ -35,13 +35,14 @@ public class LobbyButton : Button, IPointerEnterHandler, IPointerExitHandler
 #endif
     }
 
-    public void Host()
-    {
-        throw new NotImplementedException();
-    }
-
     public void Settings()
     {
-        throw new NotImplementedException();
+        SettingsMenu.Instance.OpenMenu();
+        myDinosaurAnimator.SetBool("isAttacking", true);
+    }
+
+    public void SettingsClosed()
+    {
+        myDinosaurAnimator.SetBool("isAttacking", false);
     }
 }

@@ -80,7 +80,7 @@ public class ClawsNetworkManager : NetworkManager
             yield return SceneManager.LoadSceneAsync(additiveScene, new LoadSceneParameters
             {
                 loadSceneMode = LoadSceneMode.Additive,
-                localPhysicsMode = LocalPhysicsMode.Physics2D // change to .Physics3D for a 3D game
+                localPhysicsMode = LocalPhysicsMode.Physics3D // change to .Physics3D for a 3D game
             });
         }
 

@@ -463,7 +463,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: T-Rex_Roar
-  m_Speed: 1
+  m_Speed: 0.1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101685781520031582}
@@ -676,7 +676,7 @@ AnimatorStateMachine:
     m_Position: {x: 528, y: 24, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102458310844528834}
-    m_Position: {x: 100, y: 240, z: 0}
+    m_Position: {x: 110, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102414526759659432}
     m_Position: {x: 420, y: -60, z: 0}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mirror;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,8 @@ public class LobbyMenu : MonoBehaviour
     private const int inactivePriority = 10;
     const int activePriority = 20;
     private LobbyButton hoveredButton = null;
+
+    public CinemachineCamera lobbyCamera;
     
     private void Awake()
     {
@@ -96,7 +99,22 @@ public class LobbyMenu : MonoBehaviour
             currentIndex = index;
             Toggle(false, false);
             currentIndex = tmp;
-            Toggle(true, false);
+            if (!SettingsMenu.Instance.enabled)
+            {
+                Toggle(true, false);
+            }
         }
+    }
+
+    public void Host()
+    {
+        NetworkManager.singleton.StartHost();
+        lobbyCamera.Priority = activePriority + 1;
+        buttons[currentIndex].myDinosaurAnimator.SetBool("isRoaring", true);
+    }
+
+    public void SettingsClosed()
+    {
+        Toggle(true);
     }
 }

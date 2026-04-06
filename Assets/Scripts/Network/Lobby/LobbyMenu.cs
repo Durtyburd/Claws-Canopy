@@ -12,6 +12,7 @@ public class LobbyMenu : MonoBehaviour
     int currentIndex = 0;
     private const int inactivePriority = 10;
     const int activePriority = 20;
+    private LobbyButton hoveredButton = null;
     
     private void Awake()
     {
@@ -41,6 +42,20 @@ public class LobbyMenu : MonoBehaviour
         {
             SwitchFocus((currentIndex - 1 + buttons.Count) % buttons.Count);
         };
+
+        InputSystem.actions.FindAction("Submit").performed += _ =>
+        {
+            if (hoveredButton)
+            {
+                hoveredButton.Select();
+                hoveredButton.onClick.Invoke();
+            }
+            else
+            {
+                buttons[currentIndex].Select();
+                buttons[currentIndex].onClick.Invoke();
+            }
+        };
     }
 
     private void SwitchFocus(int newIndex)
@@ -66,12 +81,14 @@ public class LobbyMenu : MonoBehaviour
         int tmp = currentIndex;
         Toggle(false, false);
         currentIndex = index;
+        hoveredButton = hovered;
         Toggle(true, false);
         currentIndex = tmp;
     }
 
     private void QuitHovering(LobbyButton hovered)
     {
+        hoveredButton = null;
         int index = buttons.IndexOf(hovered);
         if (currentIndex != index)
         {

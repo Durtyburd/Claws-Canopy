@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,8 +12,8 @@ public class LobbyButton : Button, IPointerEnterHandler, IPointerExitHandler
     public bool selected = false;
     public UnityAction<LobbyButton> onHoverEnter;
     public UnityAction<LobbyButton> onHoverExit;
-    
-    
+
+
     public override void OnPointerEnter(PointerEventData eventData)
     {
         onHoverEnter.Invoke(this);
@@ -23,5 +24,24 @@ public class LobbyButton : Button, IPointerEnterHandler, IPointerExitHandler
     {
         onHoverExit.Invoke(this);
         base.OnPointerExit(eventData);
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // stops play mode in editor
+#else
+        Application.Quit(); // works in actual build
+#endif
+    }
+
+    public void Host()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Settings()
+    {
+        throw new NotImplementedException();
     }
 }

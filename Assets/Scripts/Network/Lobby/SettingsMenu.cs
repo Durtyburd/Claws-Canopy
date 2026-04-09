@@ -3,7 +3,9 @@ using UnityEngine;
 public class SettingsMenu : MonoBehaviour
 {
     private static SettingsMenu _instance;
-    public LobbyMenu lobbyMenu;
+    [SerializeField] private RectTransform panel;
+    
+    private Animator _animator;
     
     public static SettingsMenu Instance
     {
@@ -12,6 +14,10 @@ public class SettingsMenu : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<SettingsMenu>(FindObjectsInactive.Include);
+                if (_instance)
+                {
+                    _instance._animator = _instance.GetComponent<Animator>();
+                }
             }
 
             if (_instance == null)
@@ -26,13 +32,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        this.gameObject.SetActive(false);
+        _animator.SetBool("Show", false);
         settingsToggleButton?.SettingsClosed();
-        lobbyMenu.SettingsClosed();
+        LobbyMenu.Instance?.SettingsClosed();
     }
 
     public void OpenMenu()
     {
-        this.gameObject.SetActive(true);
+        _animator.SetBool("Show", true);
     }
+
 }

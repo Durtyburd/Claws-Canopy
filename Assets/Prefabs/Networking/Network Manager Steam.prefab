@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6217386013098677136}
   - component: {fileID: 3916253165069800037}
   - component: {fileID: 3466483111790890886}
+  - component: {fileID: 2557030425823821503}
   m_Layer: 0
   m_Name: Network Manager Steam
   m_TagString: Untagged
@@ -108,6 +109,9 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
+  isSteam: 0
+  firstSceneToLoad: 
+  fadeInOut: {fileID: 0}
 --- !u!114 &3466483111790890886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,4 +124,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc3a2fc7ae86ac43a288a93663defd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SteamLobby
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   hostButton: {fileID: 0}
+  lobbyID: 0
+  networkManager: {fileID: 0}
+--- !u!114 &2557030425823821503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667877967999298689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
+  sceneId: 0
+  _assetId: 48737648
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0

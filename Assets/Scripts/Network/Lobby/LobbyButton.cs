@@ -37,7 +37,7 @@ public class LobbyButton : Button, IPointerEnterHandler, IPointerExitHandler
 
     public void Settings()
     {
-        SettingsMenu.Instance.OpenMenu();
+        // SettingsMenu.Instance.OpenMenu();
         myDinosaurAnimator.SetBool("isAttacking", true);
     }
 

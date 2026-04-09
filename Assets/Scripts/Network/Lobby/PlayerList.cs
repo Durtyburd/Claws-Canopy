@@ -28,6 +28,5 @@ public class PlayerList : MonoBehaviour
         player.rotation = Quaternion.identity;
         player.SetParent(transform);
         player.localPosition = Vector3.zero;
-
     }
 }

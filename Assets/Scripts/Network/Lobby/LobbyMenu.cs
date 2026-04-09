@@ -1,14 +1,16 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Steamworks;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class LobbyMenu : MonoBehaviour
+public class LobbyMenu : NetworkBehaviour
 {
-    // public LobbyCameraManager lobbyCameraManager;
     List<LobbyButton> buttons;
     int currentIndex = 0;
     private const int inactivePriority = 10;
@@ -16,12 +18,47 @@ public class LobbyMenu : MonoBehaviour
     private LobbyButton hoveredButton = null;
 
     public CinemachineCamera lobbyCamera;
+    [SerializeField] GameObject roomMenu;
+    [SerializeField] Transform buttonsParent;
+
+    public Transform playerListParent;
+    public List<TextMeshProUGUI> playerNameTexts = new List<TextMeshProUGUI>();
+    public List<PlayerLobbyHandler> playerLobbyHandlers = new List<PlayerLobbyHandler>();
+    public Button playGameButton;
+    
+    public static LobbyMenu Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<LobbyMenu>(FindObjectsInactive.Include);
+            }
+
+            if (_instance == null)
+            {
+                Debug.Log("No LobbyMenu found");
+            }
+            
+            return _instance;
+        }
+    }
+
+    private static LobbyMenu _instance;
     
     private void Awake()
     {
+        if(_instance == null){
+            _instance = this;
+        }else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         buttons = new List<LobbyButton>();
         
-        foreach (Transform child in transform)
+        foreach (Transform child in buttonsParent)
         {
             LobbyButton button = child.GetComponent<LobbyButton>();
             if (button)
@@ -59,6 +96,96 @@ public class LobbyMenu : MonoBehaviour
                 buttons[currentIndex].onClick.Invoke();
             }
         };
+    }
+
+    private void Start()
+    {
+        playGameButton.interactable = false;
+    }
+
+    public void UpdatePlayerLobbyUI()
+    {
+        playerNameTexts.Clear();
+        playerLobbyHandlers.Clear();
+
+        var lobby = new CSteamID(SteamLobby.Instance.lobbyID);
+        int memberCount = SteamMatchmaking.GetNumLobbyMembers(lobby);
+
+        CSteamID hostID = new CSteamID(ulong.Parse(SteamMatchmaking.GetLobbyData(lobby, "HostAddress")));
+        List<CSteamID> orderedMembers = new List<CSteamID>();
+
+        if (memberCount == 0)
+        {
+            Debug.LogWarning("Lobby has no members.. retrying...");
+            StartCoroutine(RetryUpdate());
+            return;
+        }
+
+        orderedMembers.Add(hostID);
+
+        for (int i = 0; i < memberCount; i++)
+        {
+            CSteamID memberID = SteamMatchmaking.GetLobbyMemberByIndex(lobby, i);
+            if (memberID != hostID)
+            {
+                orderedMembers.Add(memberID);
+            }
+        }
+
+        int j = 0;
+        foreach (var member in orderedMembers)
+        {
+            PlayerLobbyHandler playerLobbyHandler = playerListParent.GetChild(j).GetComponent<PlayerLobbyHandler>();
+            TextMeshProUGUI txtMesh = playerLobbyHandler.nameText;//playerListParent.GetChild(j).GetChild(0).GetComponent<TextMeshProUGUI>();
+
+
+            playerLobbyHandlers.Add(playerLobbyHandler);
+            playerNameTexts.Add(txtMesh);
+
+            string playerName = SteamFriends.GetFriendPersonaName(member);
+            playerNameTexts[j].text = playerName;
+            j++;
+        }
+    }
+
+    public void OnPlayButtonClicked()
+    {
+        if (NetworkServer.active)
+        {
+            NetworkManager.singleton.ServerChangeScene("GameplayScene"); //propagates to clients automatically?
+        }
+    }
+
+    public void RegisterPlayer(PlayerLobbyHandler player)
+    {
+        player.transform.SetParent(playerListParent, false);
+        UpdatePlayerLobbyUI();
+    }
+
+    [Server]
+    public void CheckAllPlayersReady()
+    {
+        foreach (var player in playerLobbyHandlers)
+        {
+            if (!player.isReady)
+            {
+                RpcSetPlayButtonInteractable(false);
+                return;
+            }
+        }
+        RpcSetPlayButtonInteractable(true);
+    }
+
+    [ClientRpc]
+    void RpcSetPlayButtonInteractable(bool truthStatus)
+    {
+        playGameButton.interactable = truthStatus;
+    }
+
+    private IEnumerator RetryUpdate()
+    {
+        yield return new WaitForSeconds(1f);
+        UpdatePlayerLobbyUI();
     }
 
     private void SwitchFocus(int newIndex)
@@ -106,15 +233,27 @@ public class LobbyMenu : MonoBehaviour
         }
     }
 
-    public void Host()
+    public void LobbyRoomOn() 
     {
-        NetworkManager.singleton.StartHost();
         lobbyCamera.Priority = activePriority + 1;
         buttons[currentIndex].myDinosaurAnimator.SetBool("isRoaring", true);
+        roomMenu.gameObject.SetActive(true);
+    }
+
+    public void LobbyRoomOff()
+    {
+        lobbyCamera.Priority = inactivePriority;
+        buttons[currentIndex].myDinosaurAnimator.SetBool("isRoaring", false);
+        roomMenu.gameObject.SetActive(false);
     }
 
     public void SettingsClosed()
     {
         Toggle(true);
+    }
+
+    public void StartGame()
+    {
+        
     }
 }

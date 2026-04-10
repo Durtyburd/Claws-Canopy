@@ -414,8 +414,8 @@ GameObject:
   - component: {fileID: 101738151}
   - component: {fileID: 101738153}
   - component: {fileID: 101738152}
-  - component: {fileID: 101738154}
   - component: {fileID: 101738155}
+  - component: {fileID: 101738156}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -464,10 +464,11 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 5753085086050240315, guid: ddb72d44584a39c4a9361f7aa098611c, type: 3}
+  playerPrefab: {fileID: 8212944858430137563, guid: 2cf29e350d17f5a4e872e372c62dd0b7, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 1678887181286495353, guid: c93f9de0bb724ec43a7d49122d36a268, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -484,6 +485,7 @@ MonoBehaviour:
   evaluationInterval: 3
   timeInterpolationGui: 0
   isSteam: 1
+  playerGameplayPrefab: {fileID: 1678887181286495353, guid: c93f9de0bb724ec43a7d49122d36a268, type: 3}
 --- !u!114 &101738152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,23 +514,6 @@ MonoBehaviour:
   Timeout: 25
   AllowSteamRelay: 1
   UseNextGenSteamNetworking: 1
---- !u!114 &101738154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101738147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
-  sceneId: 1181144180
-  _assetId: 0
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0
 --- !u!114 &101738155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,6 +532,23 @@ MonoBehaviour:
   hostButton: {fileID: 2040077083}
   lobbyID: 0
   networkManager: {fileID: 101738151}
+--- !u!114 &101738156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101738147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
+  sceneId: 3022486152
+  _assetId: 0
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &109507723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,8 +1562,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698917121}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.8068539, z: -0, w: -0.5907512}
-  m_LocalPosition: {x: -0.06, y: 3.24, z: 5.58}
+  m_LocalRotation: {x: 0, y: 0.83593464, z: -0, w: -0.5488291}
+  m_LocalPosition: {x: 2.66, y: 4.13, z: 6.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1994,7 +1996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.1973, y: 0.025}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1275212942
@@ -2056,7 +2058,7 @@ MonoBehaviour:
   m_Spacing: 0.02
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -2352,7 +2354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 0
+    m_Value: 1
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -2451,6 +2453,7 @@ MonoBehaviour:
   playerListParent: {fileID: 1275212941}
   playerNameTexts: []
   playerLobbyHandlers: []
+  playerImages: []
   playGameButton: {fileID: 735310071}
 --- !u!114 &1611253777
 MonoBehaviour:

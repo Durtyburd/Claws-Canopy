@@ -24,6 +24,7 @@ public class LobbyMenu : NetworkBehaviour
     public Transform playerListParent;
     public List<TextMeshProUGUI> playerNameTexts = new List<TextMeshProUGUI>();
     public List<PlayerLobbyHandler> playerLobbyHandlers = new List<PlayerLobbyHandler>();
+    public List<RawImage> playerImages = new List<RawImage>();
     public Button playGameButton;
     
     public static LobbyMenu Instance
@@ -135,15 +136,34 @@ public class LobbyMenu : NetworkBehaviour
         int j = 0;
         foreach (var member in orderedMembers)
         {
+            if (j >= playerListParent.childCount)
+            {
+                Debug.LogWarning($"Child {j} doesn't exist yet, retrying...");
+                StartCoroutine(RetryUpdate());
+                return;
+            }
             PlayerLobbyHandler playerLobbyHandler = playerListParent.GetChild(j).GetComponent<PlayerLobbyHandler>();
             TextMeshProUGUI txtMesh = playerLobbyHandler.nameText;//playerListParent.GetChild(j).GetChild(0).GetComponent<TextMeshProUGUI>();
-
-
+            RawImage rawImage = playerLobbyHandler.rawImage;
+            if (!SteamLobby.Instance.lobbyIcons.ContainsKey(member.m_SteamID))
+            {
+                int handle = SteamFriends.GetLargeFriendAvatar(member);
+                if (handle > 0)
+                    SteamLobby.Instance.lobbyIcons[member.m_SteamID] = SteamLobby.Instance.GetSteamImageAsTexture2D(handle, member.m_SteamID);
+                else
+                {
+                    // handle == -1, callback will populate it, retry then
+                    StartCoroutine(RetryUpdate());
+                    return;
+                }
+            }
             playerLobbyHandlers.Add(playerLobbyHandler);
             playerNameTexts.Add(txtMesh);
+            playerImages.Add(rawImage);
 
             string playerName = SteamFriends.GetFriendPersonaName(member);
             playerNameTexts[j].text = playerName;
+            rawImage.texture = SteamLobby.Instance.lobbyIcons[member.m_SteamID];
             j++;
         }
     }

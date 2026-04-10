@@ -1,5 +1,6 @@
 using System;
 using Mirror;
+using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,8 @@ public class PlayerLobbyHandler : NetworkBehaviour
     public bool isReady = false;
     public Button readyButton;
     public TextMeshProUGUI nameText;
-
+    public RawImage rawImage;
+    public ulong steamId;
     private void Start()
     {
         readyButton.interactable = isLocalPlayer;
@@ -26,7 +28,7 @@ public class PlayerLobbyHandler : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        LobbyMenu.Instance.RegisterPlayer(this);
+        LobbyMenu.Instance?.RegisterPlayer(this);
     }
 
     [Command]
@@ -66,4 +68,5 @@ public class PlayerLobbyHandler : NetworkBehaviour
             SetSelectedButtonColor(Color.white);
         }
     }
+    
 }

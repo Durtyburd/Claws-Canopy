@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/NetworkScenes/Room2 Test.unity
     guid: c37c6ba6690635c4ab5810b4821fb2dc
   - enabled: 1
-    path: Assets/Scenes/NetworkScenes/OnlineScene Test.unity
+    path: Assets/Scenes/NetworkScenes/GameplayScene.unity
     guid: 8c0fb7817368a5d4aa03f42c819f8bf0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

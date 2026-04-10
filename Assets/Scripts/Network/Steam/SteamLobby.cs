@@ -29,11 +29,13 @@ public class SteamLobby : NetworkBehaviour
     private static SteamLobby _instance;
     public GameObject hostButton = null;
     public ulong lobbyID;
-    public NetworkManager networkManager;
+    public ClawsNetworkManager networkManager;
     public Callback<LobbyCreated_t> lobbyCreated;
     public Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     public Callback<LobbyEnter_t> lobbyEntered;
     public Callback<LobbyChatUpdate_t> lobbyChatUpdate;
+    protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
+    public Dictionary<ulong, Texture2D> lobbyIcons = new Dictionary<ulong, Texture2D>();
 
     private const string HostAddressKey = "HostAddress";
 
@@ -52,7 +54,7 @@ public class SteamLobby : NetworkBehaviour
 
     private void Start()
     {
-        networkManager = GetComponent<NetworkManager>();
+        networkManager = GetComponent<ClawsNetworkManager>();
         if (!SteamManager.Initialized)
         {
             Debug.LogError("Steam is not initialized");
@@ -63,6 +65,7 @@ public class SteamLobby : NetworkBehaviour
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
         lobbyChatUpdate = Callback<LobbyChatUpdate_t>.Create(OnLobbyChatUpdate);
+        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
 
 
@@ -85,6 +88,7 @@ public class SteamLobby : NetworkBehaviour
         SteamMatchmaking.SetLobbyData(new CSteamID(param.m_ulSteamIDLobby), HostAddressKey,
             SteamUser.GetSteamID().ToString());
         lobbyID = param.m_ulSteamIDLobby;
+        // RequestLobbyMemberAvatars();
     }
 
 
@@ -113,10 +117,9 @@ public class SteamLobby : NetworkBehaviour
         lobbyID = param.m_ulSteamIDLobby;
         string _hostAddress = SteamMatchmaking.GetLobbyData(new CSteamID(param.m_ulSteamIDLobby), HostAddressKey);
         networkManager.networkAddress = _hostAddress;
-        Debug.Log("Entered lobby: " + param.m_ulSteamIDLobby);
         networkManager.StartClient();
         LobbyMenu.Instance.LobbyRoomOn();
-        
+        // RequestLobbyMemberAvatars();
     }
 
     void OnLobbyChatUpdate(LobbyChatUpdate_t callback)
@@ -184,4 +187,58 @@ public class SteamLobby : NetworkBehaviour
             // panelSwapper.SwapPanel("MainPanel");
             LobbyMenu.Instance.LobbyRoomOff();
         }
+        
+        private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+        {
+            Debug.Log("OnAvatarImageLoaded");
+            lobbyIcons[callback.m_steamID.m_SteamID]  = GetSteamImageAsTexture2D(callback.m_iImage, callback.m_steamID.m_SteamID);
+        }
+        
+        public Texture2D GetSteamImageAsTexture2D(int iImage, ulong steamId)
+        {
+            if (lobbyIcons.ContainsKey(steamId))
+            {
+                return lobbyIcons[steamId];
+            }
+            Texture2D texture = null;
+
+            bool isValid = SteamUtils.GetImageSize(iImage, out uint width, out uint height);
+            if (isValid)
+            {
+                byte[] image = new byte[width * height * 4];
+
+                isValid = SteamUtils.GetImageRGBA(iImage, image, (int)(width * height * 4));
+                if (isValid)
+                {
+                    texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
+                    texture.LoadRawTextureData(image);
+                    texture.Apply();
+                }
+            }
+            return texture;
+        }
+        
+        // public void RequestLobbyMemberAvatars()
+        // {
+        //     var lobby = new CSteamID(lobbyID);
+        //     int count = SteamMatchmaking.GetNumLobbyMembers(lobby);
+        //
+        //     for (int i = 0; i < count; i++)
+        //     {
+        //         CSteamID member = SteamMatchmaking.GetLobbyMemberByIndex(lobby, i);
+        //         int imageHandle = SteamFriends.GetLargeFriendAvatar(member);
+        //
+        //         if (imageHandle == -1)
+        //         {
+        //             // -1 means the image isn't cached yet — callback will fire when it loads
+        //             continue;
+        //         }
+        //         else if (imageHandle > 0)
+        //         {
+        //             // Already cached — callback won't fire, so load it directly
+        //             lobbyIcons[member.m_SteamID] = GetSteamImageAsTexture2D(imageHandle, member.m_SteamID);
+        //         }
+        //         // 0 means no avatar set, skip
+        //     }
+        // }
 }
